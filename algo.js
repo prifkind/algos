@@ -1,23 +1,22 @@
-var threeSum = function(nums) {
-    nums.sort((a, b) => a - b);
-    const result = [];
+var removeNthFromEnd = function(head, n) {
+    let dummy = new ListNode(0);
+    dummy.next = head;
+    let first = dummy;
+    let second = dummy;
 
-    for(let i = 0; i < nums.length; i++) {
-        let low = i+1, high = nums.length-1, sum = 0;
-
-        while(low < high) {
-            sum = nums[i] + nums[low] + nums[high];
-
-            if(sum === 0) {
-                result.push([nums[i], nums[low], nums[high]]);
-                while(nums[low+1] === nums[low]) low++;
-                while(nums[high-1] === nums[high]) high--;
-                low++;
-                high--;
-            } else if(sum < 0) low++;
-            else high--;
-        }
-        while(nums[i+1] === nums[i]) i++;
+    // Move first pointer n nodes ahead of second pointer
+    for(let i = 0; i <= n; i++){
+        first = first.next;
     }
-    return result;
+
+    // Move both pointers until first pointer reaches the end of the list
+    while(first !== null){
+        second = second.next;
+        first = first.next;
+    }
+
+    // Remove the nth node from the end of the list
+    second.next = second.next.next;
+
+    return dummy.next;
 };
