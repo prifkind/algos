@@ -6,31 +6,42 @@
  * }
  */
 /**
- * @param {ListNode} list1
- * @param {ListNode} list2
+ * @param {ListNode[]} lists
  * @return {ListNode}
  */
-var mergeTwoLists = function (list1, list2) {
-
-    const start = new ListNode(-Infinity)
-    let prev = start
-
-    // Note that list1 and list2 are both nodes
-    while (list1 && list2) {
-        if (list1.val <= list2.val) {
-            prev.next = list1
-            prev = list1
-            list1 = list1.next
-        } else {
-            prev.next = list2
-            prev = list2
-            list2 = list2.next
-        }
-
+function mergeLists(a, b) {
+    const dummy = new ListNode(0);
+    let temp = dummy;
+     while (a !== null && b !== null) {
+         if (a.val < b.val) {
+             temp.next = a;
+             a = a.next;
+         } else {
+             temp.next = b;
+             b = b.next;
+         }
+         temp = temp.next;
+     }
+    if (a !== null) {
+        temp.next = a;
     }
-        if (!list1) prev.next = list2
-        if (!list2) prev.next = list1
+    if (b !== null) {
+        temp.next = b;
+    }
+    return dummy.next;
+}
 
-    return start.next
+var mergeKLists = function(lists) {
+    if (lists.length === 0 ) {
+        return null;
+    }
 
+
+    while (lists.length > 1) {
+        let a = lists.shift();
+        let b = lists.shift();
+        const h = mergeLists(a, b);
+        lists.push(h);
+    }
+    return lists[0];
 };
