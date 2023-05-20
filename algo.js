@@ -1,16 +1,38 @@
-/**
- * @param {number[]} nums
- * @param {number} target
- * @return {number}
- */
-var search = function (nums, target) {
-    let counter = nums.length - 1
+var combinationSum = function(candidates, target) {
 
-    while (counter >= 0) {
-        if (nums.pop() === target) {
-            return counter
-        } else counter--
+    if (!candidates) {
+        return [];
     }
 
-    return -1
+    // if (target === 0) {
+    //     return [[]];
+    // }
+
+
+    candidates.sort((a,b) => { return a - b});
+
+    let paths = [];
+
+
+    let find = function (t, p, i) {
+
+        if (t === 0) {
+            paths.push(p);
+            return;
+        } else if (t < 0) {
+            return;
+        } else {
+            while (i < candidates.length && t - candidates[i] >= 0) {
+                find(t - candidates[i], [...p, candidates[i]], i)
+                i++;
+            }
+
+        }
+
+    }
+
+
+    find (target, [], 0);
+
+    return paths;
 };
