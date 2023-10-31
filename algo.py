@@ -1,28 +1,37 @@
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
 class Solution(object):
-    def maxArea(self, height):
+    def mergeTwoLists(self, list1, list2):
         """
-        :type height: List[int]
-        :rtype: int
+        :type list1: Optional[ListNode]
+        :type list2: Optional[ListNode]
+        :rtype: Optional[ListNode]
         """
-        # Base case
-        if len(height) == 2:
-            return min(height[0], height[1]) * 1
 
-        # Pointers
-        left = 0
-        right = len(height) - 1
+        dummy = ListNode(-101)
+        current = dummy
 
-        max_area = min(height[left], height[right]) * (right-left)
-
-        while left != right:
-            selected_max = min(height[left], height[right]) * (right-left)
-
-            if (selected_max) > max_area:
-                max_area = selected_max
-
-            if height[left] < height[right]:
-                left += 1
+        while list1 and list2:
+            if list1.val < list2.val:
+                current.next = list1
+                list1 = list1.next
             else:
-                right -= 1
+                current.next = list2
+                list2 = list2.next
 
-        return max_area
+            current = current.next
+
+        if list1:
+            current.next = list1
+
+        if list2:
+            current.next = list2
+
+
+        return dummy.next
+
+
+
