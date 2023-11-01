@@ -1,37 +1,34 @@
+import heapq
+
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
-class Solution(object):
-    def mergeTwoLists(self, list1, list2):
-        """
-        :type list1: Optional[ListNode]
-        :type list2: Optional[ListNode]
-        :rtype: Optional[ListNode]
-        """
 
-        dummy = ListNode(-101)
+class Solution(object):
+    def mergeKLists(self, lists):
+        """
+        :type lists: List[ListNode]
+        :rtype: ListNode
+        """
+        dummy = ListNode(-float('inf'))
         current = dummy
 
-        while list1 and list2:
-            if list1.val < list2.val:
-                current.next = list1
-                list1 = list1.next
-            else:
-                current.next = list2
-                list2 = list2.next
+        # Initialize a priority queue
+        queue = []
+        for idx, node in enumerate(lists):
+            if node:
+                heapq.heappush(queue, (node.val, idx))
+                lists[idx] = node.next
 
+        while queue:
+            val, idx = heapq.heappop(queue)
+            current.next = ListNode(val)
             current = current.next
 
-        if list1:
-            current.next = list1
-
-        if list2:
-            current.next = list2
-
+            if lists[idx]:
+                heapq.heappush(queue, (lists[idx].val, idx))
+                lists[idx] = lists[idx].next
 
         return dummy.next
-
-
-
