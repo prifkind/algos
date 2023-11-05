@@ -1,31 +1,18 @@
 class Solution(object):
-    def search(self, nums, target):
+    def rotate(self, matrix):
         """
-        :type nums: List[int]
-        :type target: int
-        :rtype: int
+        :type matrix: List[List[int]]
+        :rtype: None Do not return anything, modify matrix in-place instead.
         """
-        # Set up pointers for left, right, and middle
-        left, right = 0, len(nums) - 1
+        n = len(matrix)
 
-        while left <= right:
-            mid = (left + right) // 2
+        # Transpose the matrix
+        for i in range(n):
+            for j in range(i, n):
+                # Swap element at (i, j) with element at (j, i)
+                # This takes each row, and turns it into a column
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 
-            # If the middle element matches the target, return its index
-            if nums[mid] == target:
-                return mid
-
-            # Determine which half is sorted
-            if nums[left] <= nums[mid]:  # Left half is sorted
-                if nums[left] <= target <= nums[mid]:  # Check if target is within the left sorted half
-                    right = mid - 1
-                else:
-                    left = mid + 1
-            else:  # Right half is sorted
-                if nums[mid] <= target <= nums[right]:  # Check if target is within the right sorted half
-                    left = mid + 1
-                else:
-                    right = mid - 1
-
-        # If we've reached here, the target isn't in the list
-        return -1
+        # Reverse each row to get the correct arrangement
+        for i in range(n):
+            matrix[i].reverse()
