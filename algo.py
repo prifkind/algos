@@ -1,21 +1,19 @@
 class Solution(object):
-    def reverse(self, x):
+    def maxSubArray(self, nums):
         """
-        :type x: int
+        :type nums: List[int]
         :rtype: int
         """
-        x_abs = abs(x)
-        xlist = list(map(str, str(x_abs)))
-        reversed_xlist = xlist[::-1]
 
-        reversed_x = "".join(reversed_xlist)
-        reversed_x_int = int(reversed_x)
+        # Initialize current_max and largest_max to the first element.
+        current_max = largest_max = nums[0]
 
-        if reversed_x_int >= -2**31 and reversed_x_int <= 2**31 - 1:
-            if x >=0:
-                return reversed_x_int
+        # Iterate through the array starting from the second element.
+        for num in nums[1:]:
+            # Extend the subarray sum to include the current number or start a new subarray.
+            current_max = max(num, current_max + num)
 
-            if x < 0:
-                return -reversed_x_int
+            # Update largest_max if necessary.
+            largest_max = max(largest_max, current_max)
 
-        return 0
+        return largest_max
