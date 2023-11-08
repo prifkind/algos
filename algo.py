@@ -1,19 +1,21 @@
 class Solution(object):
-    def maxSubArray(self, nums):
+    def canJump(self, nums):
         """
         :type nums: List[int]
-        :rtype: int
+        :rtype: bool
         """
+        max_reachable = 0
 
-        # Initialize current_max and largest_max to the first element.
-        current_max = largest_max = nums[0]
+        for i, jump in enumerate(nums):
+            # If the current index is greater than the max_reachable index,
+            # it means we can't move forward from a previous point, hence return False
+            if i > max_reachable:
+                return False
+            # We update max_reachable if we can reach further from this point
+            max_reachable = max(max_reachable, i + jump)
+            # If max_reachable is beyond the last index, we can reach the end
+            if max_reachable >= len(nums) - 1:
+                return True
 
-        # Iterate through the array starting from the second element.
-        for num in nums[1:]:
-            # Extend the subarray sum to include the current number or start a new subarray.
-            current_max = max(num, current_max + num)
-
-            # Update largest_max if necessary.
-            largest_max = max(largest_max, current_max)
-
-        return largest_max
+        # If we exited the loop normally, check if we can reach the end
+        return max_reachable >= len(nums) - 1
