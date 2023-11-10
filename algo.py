@@ -1,21 +1,29 @@
 class Solution(object):
-    def canJump(self, nums):
+    def insert(self, intervals, newInterval):
         """
-        :type nums: List[int]
-        :rtype: bool
+        :type intervals: List[List[int]]
+        :type newInterval: List[int]
+        :rtype: List[List[int]]
         """
-        max_reachable = 0
+        result = []
+        i = 0
+        start, end = newInterval
 
-        for i, jump in enumerate(nums):
-            # If the current index is greater than the max_reachable index,
-            # it means we can't move forward from a previous point, hence return False
-            if i > max_reachable:
-                return False
-            # We update max_reachable if we can reach further from this point
-            max_reachable = max(max_reachable, i + jump)
-            # If max_reachable is beyond the last index, we can reach the end
-            if max_reachable >= len(nums) - 1:
-                return True
+        # Add all the intervals ending before newInterval starts
+        while i < len(intervals) and intervals[i][1] < start:
+            result.append(intervals[i])
+            i += 1
 
-        # If we exited the loop normally, check if we can reach the end
-        return max_reachable >= len(nums) - 1
+        # Merge all overlapping intervals to one considering newInterval
+        while i < len(intervals) and intervals[i][0] <= end:
+            start = min(start, intervals[i][0])
+            end = max(end, intervals[i][1])
+            i += 1
+        result.append([start, end])  # add the merged interval
+
+        # Add all the rest
+        while i < len(intervals):
+            result.append(intervals[i])
+            i += 1
+
+        return result
