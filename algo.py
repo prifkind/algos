@@ -1,24 +1,30 @@
-class Solution:
-    def climbStairs(self, n):
+class Solution(object):
+    def setZeroes(self, matrix):
         """
-        :type n: int
-        :rtype: int
+        :type matrix: List[List[int]]
+        :rtype: None Do not return anything, modify matrix in-place instead.
         """
-        # Base cases
-        if n == 1:
-            return 1
-        if n == 2:
-            return 2
 
-        # Initialize the base cases
-        one_step_before = 2
-        two_steps_before = 1
-        all_ways = 0
+        rows_to_update = set()
+        columns_to_update = set()
 
-        # Calculate the number of ways for each step
-        for i in range(2, n):
-            all_ways = one_step_before + two_steps_before
-            two_steps_before = one_step_before
-            one_step_before = all_ways
+        # Loop through the matrix and find the rows and columns that need to be set to zeroes
+        for i, row in enumerate(matrix):
+            for j, value in enumerate(row):
+                if value == 0:
+                    rows_to_update.add(i)
+                    columns_to_update.add(j)
 
-        return all_ways
+        # Set the identified rows to zeroes
+        for i in rows_to_update:
+            for j in range(len(matrix[0])):
+                matrix[i][j] = 0
+
+        # Set the identified columns to zeroes
+        for j in columns_to_update:
+            for i in range(len(matrix)):
+                matrix[i][j] = 0
+
+        # The function returns None as it modifies the matrix in-place
+
+
