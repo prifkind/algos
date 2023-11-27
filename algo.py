@@ -1,30 +1,31 @@
-class Solution(object):
-    def setZeroes(self, matrix):
-        """
-        :type matrix: List[List[int]]
-        :rtype: None Do not return anything, modify matrix in-place instead.
-        """
+class Solution:
+    def exist(self, board, word):
+        ROWS, COLS = len(board), len(board[0])
 
-        rows_to_update = set()
-        columns_to_update = set()
+        def dfs(r, c, i):
+            ''' Depth-first search from board[r][c] for word[i:]. '''
+            if i == len(word):
+                return True
+            if (r < 0 or c < 0 or
+                r >= ROWS or c >= COLS or
+                word[i] != board[r][c] or
+                board[r][c] == "#"):  # Marked as part of the path
+                return False
 
-        # Loop through the matrix and find the rows and columns that need to be set to zeroes
-        for i, row in enumerate(matrix):
-            for j, value in enumerate(row):
-                if value == 0:
-                    rows_to_update.add(i)
-                    columns_to_update.add(j)
+            # Mark the choice before exploring further.
+            temp, board[r][c] = board[r][c], '#'
+            # Explore the four possible directions.
+            res = (dfs(r+1, c, i+1) or
+                   dfs(r-1, c, i+1) or
+                   dfs(r, c+1, i+1) or
+                   dfs(r, c-1, i+1))
+            # Unmark the choice, backtracking.
+            board[r][c] = temp
+            return res
 
-        # Set the identified rows to zeroes
-        for i in rows_to_update:
-            for j in range(len(matrix[0])):
-                matrix[i][j] = 0
-
-        # Set the identified columns to zeroes
-        for j in columns_to_update:
-            for i in range(len(matrix)):
-                matrix[i][j] = 0
-
-        # The function returns None as it modifies the matrix in-place
-
-
+        # Check every position on the board for the start of the word.
+        for r in range(ROWS):
+            for c in range(COLS):
+                if dfs(r, c, 0):
+                    return True
+        return False
